@@ -1,16 +1,6 @@
 # le_chat
+Hey Everyone!
+Hope you are doing well. This is my new project of chatting app "Le chat" using technologies like flutter and for backend I have used firebase. User will first login to the app using their email id and password and then they can create a common group to add people in that group for chat. This application will work in android and web. Sorry ios users!. 
+I hope you all will love this app and please let me know any scope for future improvements or if there are any bugs.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Thank you
