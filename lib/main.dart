@@ -56,7 +56,7 @@ bool _isSignedIn=false;
         primaryColor: Constants().primaryColor,
         scaffoldBackgroundColor: Colors.white
       ),
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       home: _isSignedIn ? const HomePage() : const LoginPage(),
     );
     
