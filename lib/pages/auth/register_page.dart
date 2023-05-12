@@ -1,26 +1,33 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:le_chat/pages/auth/register_page.dart';
-import 'package:le_chat/widgets/widgets.dart';
+import 'package:le_chat/helper/helper_function.dart';
+import 'package:le_chat/pages/auth/login_page.dart';
+import 'package:le_chat/pages/home_page.dart';
+import 'package:le_chat/services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+import '../../widgets/widgets.dart';
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  bool _isLoading=false;
+  final formKey=GlobalKey<FormState>();
   String email="";
   String Password="";
-   final formKey=GlobalKey<FormState>();
+  String fullName="";
+  AuthService authService=AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: SingleChildScrollView(
+      body: _isLoading? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor),) : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
           child: Form(
@@ -31,8 +38,33 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget> [
                  const Text("Groupie", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
                  const  SizedBox(height: 10),
-                 const Text("Login now to see what they are talking!", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
-                 Image.asset("assets/login.png"),
+                 const Text("Create your account now to chat and explore", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
+                 Image.asset("assets/register.png"),
+                 TextFormField(
+                  decoration: textInputDecoration.copyWith(
+                    labelText: "Full name",
+                    prefixIcon: Icon(
+                      Icons.person,
+                      color: Theme.of(context).primaryColor,
+                    )
+                  ),
+                  onChanged: (val){
+                    setState(() {
+                      fullName = val;
+                      
+                    });
+                  },
+                  validator: (val){
+                    if(val!.isNotEmpty){
+                      return null;
+                    }
+                    else{
+                      return "Name cannot be empty";
+                    }
+                  }, 
+                 ),
+
+                 const SizedBox(height: 15,),
                  TextFormField(
                   decoration: textInputDecoration.copyWith(
                     labelText: "Email",
@@ -76,7 +108,9 @@ class _LoginPageState extends State<LoginPage> {
                       Password = val;
                       
                     });
-                  }
+                    
+                  },
+                  
                  ),
                  const SizedBox(height: 20),
                  SizedBox(
@@ -87,25 +121,25 @@ class _LoginPageState extends State<LoginPage> {
                       elevation: 0,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                     ),
-                    child: const Text("Sign In", style: TextStyle(color: Colors.white, fontSize: 16),),
+                    child: const Text("Register", style: TextStyle(color: Colors.white, fontSize: 16),),
                     onPressed: () {
-                      login();
+                      register();
                     },
                   ),
                  ),
                  SizedBox(height: 10),
                  Text.rich(
                   TextSpan(
-                    text: "Don't have an account? ",
+                    text: "Already have an account? ",
                     style: TextStyle(color: Colors.black, fontSize: 14),
                     children: <TextSpan>[
                       TextSpan(
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                         ),
-                        text: "Register here!",
+                        text: "Login now!",
                         recognizer: TapGestureRecognizer()..onTap=(){
-                          nextScreen(context, const RegisterPage());
+                          nextScreen(context, const LoginPage());
                         },
                       )
                     ]
@@ -118,7 +152,28 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  login(){
-
+   register() async{
+    if(formKey.currentState!.validate()){
+      setState(() {
+        _isLoading=true;
+      });
+      await authService
+      .registerUserWithEmailAndPassword(fullName, email, Password)
+      .then((value)  async{
+        if(value==true){
+          //saving the shared preference state
+          await HelperFunction.savedUserLoggedInStatus(true);
+          await HelperFunction.savedUserNameSF(fullName);
+          await HelperFunction.savedUserEmailSF(email);
+          nextScreenReplace(context, const HomePage());
+        }
+        else{
+          showSnackBar(context, Colors.red, value);
+          setState(() {
+            _isLoading=false;
+          });
+        }
+      });
+    }
   }
 }
