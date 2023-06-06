@@ -4,6 +4,7 @@ import "package:flutter/foundation.dart";
 import "package:le_chat/helper/helper_function.dart";
 import "package:le_chat/pages/auth/login_page.dart";
 import "package:le_chat/pages/home_page.dart";
+import "package:le_chat/pages/splash_screen.dart";
 import "package:le_chat/shared/constants.dart";
 
 void main() async {
@@ -45,7 +46,9 @@ bool _isSignedIn=false;
   getUserLoggedInStatus() async {
     await HelperFunction.getUserLoggedInStatus().then((value) {
       if(value!=null){
-        _isSignedIn=value;
+        setState(() {
+          _isSignedIn=value;
+        });
       }
     });
   }
@@ -57,7 +60,7 @@ bool _isSignedIn=false;
         scaffoldBackgroundColor: Colors.white
       ),
       debugShowCheckedModeBanner: false,
-      home: _isSignedIn ? const HomePage() : const LoginPage(),
+      home: const SplashScreen(),
     );
     
   }
