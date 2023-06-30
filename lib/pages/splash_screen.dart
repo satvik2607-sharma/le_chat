@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'dart:async'; 
 import 'package:flutter/material.dart';
 import 'package:le_chat/pages/auth/login_page.dart';
 import 'package:le_chat/pages/home_page.dart';
@@ -14,16 +13,16 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-
   @override
   void initState() {
-    // TODO: implement initState
+    
+    
     super.initState();
 
 
-    Timer(Duration(seconds: 2), (){
+    Timer(const Duration(seconds: 2), (){
 
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>   LoginPage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>  const LoginPage()));
     });
   }
   @override

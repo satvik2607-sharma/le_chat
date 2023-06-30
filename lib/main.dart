@@ -38,9 +38,9 @@ class _MyAppState extends State<MyApp> {
 bool _isSignedIn=false;
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     getUserLoggedInStatus();
+    super.initState();
+    
   }
 
   getUserLoggedInStatus() async {
@@ -60,7 +60,7 @@ bool _isSignedIn=false;
         scaffoldBackgroundColor: Colors.white
       ),
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home:_isSignedIn ? const HomePage() : const LoginPage(),
     );
     
   }
